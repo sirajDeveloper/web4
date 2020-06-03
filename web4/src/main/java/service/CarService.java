@@ -12,16 +12,11 @@ import java.util.List;
 public class CarService {
 
     private static CarService carService;
-    private SessionFactory sessionFactory;
     private CarDao carDao;
-
-    private CarService(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     public static CarService getInstance() {
         if (carService == null) {
-            carService = new CarService(DBHelper.getSessionFactory());
+            carService = new CarService();
         }
         return carService;
     }

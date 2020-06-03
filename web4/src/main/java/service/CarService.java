@@ -27,11 +27,13 @@ public class CarService {
     }
 
     public List<Car> getAllCars() {
-        return new CarDao(sessionFactory.openSession()).getAllCar();
+        new CarDao().getAllCar();
+        return new CarDao().getAllCar();
     }
 
     public Long addCar(Car car) {
-        CarDao carDao = new CarDao(sessionFactory.openSession());
+        //CarDao carDao = new CarDao(sessionFactory.openSession());
+        CarDao carDao = new CarDao();
         Long id = null;
         if (carDao.countBrand(car.getBrand()) < 10) {
             id = carDao.addCarDao(car);
@@ -40,7 +42,7 @@ public class CarService {
     }
 
     public Car sellCar(Car car) {
-        CarDao carDao = new CarDao(sessionFactory.openSession());
+        CarDao carDao = new CarDao();
         Car carOfBd = carDao.getCarDao(car);
         if (carOfBd != null) {
             DailyReportService.getInstance().addReport(new DailyReport(carOfBd.getPrice(), 1L));
@@ -50,15 +52,15 @@ public class CarService {
     }
 
     public boolean deleteCar(Car car) {
-       return new CarDao(sessionFactory.openSession()).deleteCarDao(car.getId());
+       return new CarDao().deleteCarDao(car.getId());
     }
 
     public Car getCarById(long id) {
-        return new CarDao(sessionFactory.openSession()).getCarByIdDao(id);
+        return new CarDao().getCarByIdDao(id);
     }
 
     public void deleteAllCars() {
-        new CarDao(sessionFactory.openSession()).deleteAllCarsDao();
+        new CarDao().deleteAllCarsDao();
     }
 
 

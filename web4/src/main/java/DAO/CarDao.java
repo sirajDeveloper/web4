@@ -1,24 +1,28 @@
 package DAO;
 
 import model.Car;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import service.CarService;
+import util.DBHelper;
+
 import java.util.List;
 
 public class CarDao {
 
     private Session session;
+    private SessionFactory sessionFactory;
 
-    public CarDao(Session session) { this.session = session; } // сделать конструктор пустым
+    public CarDao() {
+        this.sessionFactory = DBHelper.getSessionFactory();
+    }
 
     public List<Car> getAllCar() {
         return (List<Car>) session.createQuery("FROM Car").list();
     }
 
     public Long addCarDao(Car car) {
+        session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         long id = (long) session.save(car);
         transaction.commit();
@@ -27,6 +31,7 @@ public class CarDao {
     }
 
     public Car getCarDao(Car car) {
+        session = sessionFactory.openSession();
         String brand = car.getBrand();
         String model = car.getModel();
         String licensePlate = car.getLicensePlate();
@@ -49,6 +54,7 @@ public class CarDao {
     }
 
     public boolean deleteCarDao(long id) {
+        session = sessionFactory.openSession();
         Query query = session.createQuery("DELETE from Car WHERE id = :id");
         query.setParameter("id", id);
         int res = query.executeUpdate();
@@ -58,6 +64,7 @@ public class CarDao {
 
 
     public void deleteAllCarsDao() {
+        session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
@@ -73,9 +80,11 @@ public class CarDao {
     }
 
     public int countBrand(String brand) {
+        session = sessionFactory.openSession();
         Criteria criteria = session.createCriteria(Car.class);
         criteria.add(Restrictions.eq("brand", brand));
         List list = criteria.list();
+        session.close();
         return list.size();
     }
 

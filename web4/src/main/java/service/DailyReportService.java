@@ -29,19 +29,19 @@ public class DailyReportService {
     }
 
     public List<DailyReport> getAllDailyReports() {
-        return new DailyReportDao(sessionFactory.openSession()).getAllDailyReport();
+        return new DailyReportDao().getAllDailyReport();
     }
 
     public void generateReport() {
-        new DailyReportDao(sessionFactory.openSession()).saveReportDao(new DailyReport(earnings, soldCars));
+        new DailyReportDao().saveReportDao(new DailyReport(earnings, soldCars));
     }
 
     public DailyReport getLastReport() {
-        return new DailyReportDao(sessionFactory.openSession()).getLastDayReport();
+        return new DailyReportDao().getLastDayReport();
     }
 
     public void deleteDailyReport() {
-        new DailyReportDao(sessionFactory.openSession()).deleteDailyReportDao();
+        new DailyReportDao().deleteDailyReportDao();
     }
 
     public void addReport(DailyReport dailyReport) {

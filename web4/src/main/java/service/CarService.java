@@ -12,8 +12,8 @@ import java.util.List;
 public class CarService {
 
     private static CarService carService;
-
     private SessionFactory sessionFactory;
+    private CarDao carDao;
 
     private CarService(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -32,8 +32,7 @@ public class CarService {
     }
 
     public Long addCar(Car car) {
-        //CarDao carDao = new CarDao(sessionFactory.openSession());
-        CarDao carDao = new CarDao();
+        carDao = new CarDao();
         Long id = null;
         if (carDao.countBrand(car.getBrand()) < 10) {
             id = carDao.addCarDao(car);
@@ -42,7 +41,7 @@ public class CarService {
     }
 
     public Car sellCar(Car car) {
-        CarDao carDao = new CarDao();
+        carDao = new CarDao();
         Car carOfBd = carDao.getCarDao(car);
         if (carOfBd != null) {
             DailyReportService.getInstance().addReport(new DailyReport(carOfBd.getPrice(), 1L));
